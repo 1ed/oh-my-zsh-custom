@@ -1,4 +1,4 @@
-# My [oh-my-zsh] config
+# My [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh) config
 
 ## Installation
 
