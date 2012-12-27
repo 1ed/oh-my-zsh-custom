@@ -1,4 +1,11 @@
-PROMPT='%{$fg_bold[green]%}%n%{$fg_no_bold[cyan]%}$(hostname_if_connected_via_ssh)%{$fg_bold[red]%} ➜ %{$fg[cyan]%}%c %{$reset_color%}$(git_time_since_commit)$(check_git_prompt_info)%{$fg[blue]%}$%{$reset_color%} '
+# vim:ft=zsh ts=2 sw=2 sts=2
+#
+# 1ed's Theme 
+
+PROMPT='%{$fg_bold[green]%}$(prompt_context)%{$fg_bold[red]%} ➜ %{$fg[cyan]%}%c %{$reset_color%}$(git_time_since_commit)$(check_git_prompt_info)%{$fg[blue]%}$%{$reset_color%} '
+
+# default user for prompt context
+DEFAULT_USER="egabor"
 
 # Git prompt
 ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[red]%}"
@@ -12,9 +19,13 @@ ZSH_THEME_GIT_TIME_SHORT_COMMIT_MEDIUM="%{$fg[yellow]%}"
 ZSH_THEME_GIT_TIME_SINCE_COMMIT_LONG="%{$fg[red]%}"
 ZSH_THEME_GIT_TIME_SINCE_COMMIT_NEUTRAL="%{$fg[cyan]%}"
 
-# Get the hostname if connected via ssh
-function hostname_if_connected_via_ssh() {
-  if [ -n "${SSH_CLIENT:+x}" ]; then hostname; fi;
+# Get the hostname and username if connected via ssh or different from DEFAULT_USER
+function prompt_context() {
+  local user=`whoami`
+ 
+  if [[ "$user" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]; then
+    echo -n "%(!.%{$fg{yellow}%}.)$user@%m"
+  fi
 }
 
 # Git sometimes goes into a detached head state. git_prompt_info doesn't
