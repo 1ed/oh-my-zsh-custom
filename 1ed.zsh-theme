@@ -2,7 +2,7 @@
 #
 # 1ed's Theme 
 
-PROMPT='%{$fg_bold[green]%}$(prompt_context)%{$fg_bold[red]%} ➜ %{$fg[cyan]%}%c %{$reset_color%}$(git_time_since_commit)$(check_git_prompt_info)%{$fg[blue]%}$%{$reset_color%} '
+PROMPT='$(am_i_root)%{$fg_bold[green]%}$(prompt_context)%{$fg_bold[red]%} ➜ %{$fg[cyan]%}%c %{$reset_color%}$(git_time_since_commit)$(check_git_prompt_info)%{$fg[blue]%}$%{$reset_color%} '
 
 # default user for prompt context
 DEFAULT_USER="egabor"
@@ -24,7 +24,13 @@ function prompt_context() {
   local user=`whoami`
  
   if [[ "$user" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]; then
-    echo -n "%(!.%{$fg{yellow}%}.)$user@%m"
+    echo - "$user@%m"
+  fi
+}
+
+function am_i_root() {
+  if [[ $UID -eq 0 ]]; then
+    echo -n "%{%F{yellow}%}⚡"
   fi
 }
 
